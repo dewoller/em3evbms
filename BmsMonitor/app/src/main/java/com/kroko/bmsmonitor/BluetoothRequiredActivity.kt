@@ -22,7 +22,8 @@ abstract class BluetoothRequiredActivity : AppCompatActivity() {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 arrayOf(
                     Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
             } else {
                 arrayOf(
@@ -33,8 +34,8 @@ abstract class BluetoothRequiredActivity : AppCompatActivity() {
             }
         }
 
-    class EnableBluetoothContract : ActivityResultContract<Void, Boolean>() {
-        override fun createIntent(context: Context, input: Void?): Intent {
+    class EnableBluetoothContract : ActivityResultContract<Unit, Boolean>() {
+        override fun createIntent(context: Context, input: Unit): Intent {
             return Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
         }
 
@@ -74,7 +75,7 @@ abstract class BluetoothRequiredActivity : AppCompatActivity() {
         val bluetoothAdapter: BluetoothAdapter = bluetoothManager?.adapter ?: return null
         if (!bluetoothAdapter.isEnabled) {
             Log.d("BmsMonitor", "Bluetooth is disabled; trying to enable")
-            enableBluetoothLauncher.launch(null);
+            enableBluetoothLauncher.launch(Unit)
             return null;
         }
         return bluetoothAdapter

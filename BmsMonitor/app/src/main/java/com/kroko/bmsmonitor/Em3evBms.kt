@@ -138,6 +138,7 @@ class Em3evBms(private val ctx: Context, private val device: BluetoothDevice, va
                 enqueueCommand(commandBuilder.unlockCommand(device))
                 state = State.UNLOCKING_BMS
             }
+            else -> { }
         }
     }
 
@@ -186,6 +187,7 @@ class Em3evBms(private val ctx: Context, private val device: BluetoothDevice, va
                 bmsData.numCells = reader.readUByte()
                 bmsData.cellVoltages = (1..bmsData.numCells).map { reader.readUShort() }.toIntArray()
             }
+            else -> { }
         }
         updateHandler.onDataChanged(bmsData)
     }
